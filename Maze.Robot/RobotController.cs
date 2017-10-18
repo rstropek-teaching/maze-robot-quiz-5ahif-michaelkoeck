@@ -1,4 +1,6 @@
 ﻿using Maze.Library;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace Maze.Solver
 {
@@ -8,7 +10,8 @@ namespace Maze.Solver
     public class RobotController
     {
         private IRobot robot;
-
+        private List<Point> alreadyVisited = new List<Point>();
+        bool end = false;
         /// <summary>
         /// Initializes a new instance of the <see cref="RobotController"/> class
         /// </summary>
@@ -34,13 +37,60 @@ namespace Maze.Solver
             // Here you have to add your code
 
             // Trivial sample algorithm that can just move right
-            var reachedEnd = false;
-            robot.ReachedExit += (_, __) => reachedEnd = true;
+            
+            int xCoord = 0;
+            int yCoord = 0; 
 
-            while (!reachedEnd)
-            {
-                robot.Move(Direction.Right);
-            }
+            robot.ReachedExit += (_, __) => end = true;
+            this.recursiveMethode(xCoord, yCoord);
+
+        
+
+
+        }
+
+        public void recursiveMethode(int x, int y)
+        {
+           
+                if (this.alreadyVisited.Contains(new Point(x, y)) == false && this.end == false)
+                {
+                    this.alreadyVisited.Add(new Point(x, y));
+
+                    if (this.end == false && this.robot.TryMove(Direction.Up) == true )
+                    {
+                    this.recursiveMethode(x, y - 1);
+                        if (this.end == false)
+                        {
+                        this.robot.Move(Direction.Down);
+                        }
+                    }
+                    if (this.end == false && this.robot.TryMove(Direction.Down) == true)
+                {
+                    this.recursiveMethode(x, y + 1);
+                        if (this.end == false)
+                        {
+                        this.robot.Move(Direction.Up);
+                        }
+                    }
+                    if (this.end == false && this.robot.TryMove(Direction.Right) == true)
+                {
+                    this.recursiveMethode(x + 1, y);
+                        if (end == false)
+                        {
+                        this.robot.Move(Direction.Left);
+                        }
+                    }
+                    if (this.end == false && this.robot.TryMove(Direction.Left) == true)
+                {
+                    this.recursiveMethode(x - 1, y);
+                        if (this.end == false)
+                        {
+                        this.robot.Move(Direction.Right);
+                        }
+                    }
+                }
+           
+
         }
     }
 }
