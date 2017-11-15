@@ -36,6 +36,8 @@ namespace Maze.Solver
         {
             // Here you have to add your code
 
+            // Tip: Remove comments that are no longer valid. This confuses developers
+            // who have to maintain your code.
             // Trivial sample algorithm that can just move right
             
             int xCoord = 0;
@@ -44,11 +46,14 @@ namespace Maze.Solver
             robot.ReachedExit += (_, __) => end = true;
             this.recursiveMethode(xCoord, yCoord);
 
+            // Tip: It is generally considered bad coding style to add multiple empty
+            // lines to structure your code.
         
 
 
         }
 
+        // Tip: In C#, member names typically start with uppercase letters.
         public void recursiveMethode(int x, int y)
         {
            
